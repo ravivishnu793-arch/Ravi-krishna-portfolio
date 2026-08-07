@@ -1,0 +1,75 @@
+{
+  "hero": {
+    "name": "Ravi Krishna A R",
+    "role": "B.Tech, Artificial Intelligence & Data Science",
+    "desc": "I build small, working models out of messy real-world data — forecasting demand, summarizing speech, teaching machines to notice patterns people miss."
+  },
+  "summary": "Motivated, detail-oriented AI & Data Science student with a strong interest in machine learning, data analytics, and applied AI. Comfortable in Python end to end — from cleaning a dataset to shipping a working prototype — and drawn to projects that turn ambiguous problems into measurable ones.",
+  "skillGroups": [
+    {
+      "title": "Core",
+      "variant": "signal",
+      "items": ["Python", "Java", "HTML / CSS", "MS Excel", "Figma"]
+    },
+    {
+      "title": "AI & Data Science",
+      "variant": "teal",
+      "items": ["Machine Learning", "Data Analytics", "Data Visualization"]
+    },
+    {
+      "title": "Working with people",
+      "variant": "plain",
+      "items": ["Communication", "Teamwork", "Problem Solving"]
+    }
+  ],
+  "projects": [
+    {
+      "tag": "forecasting",
+      "title": "Water Demand Forecasting",
+      "desc": "A machine learning model that predicts urban water demand from climate and historical usage data — built to help utilities plan supply instead of react to it.",
+      "stack": ["Python", "Pandas", "NumPy", "Scikit-learn"]
+    },
+    {
+      "tag": "nlp",
+      "title": "AI Smart Note-Taking Assistant",
+      "desc": "An AI note-taking assistant with speech-to-text capture and automatic summarization, designed to keep notes organized without extra manual effort.",
+      "stack": ["Python", "NLP", "Speech-to-Text"]
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2025 — Jun–Jul",
+      "title": "Cloud Computing & AWS Internship",
+      "desc": "30-day internship covering cloud infrastructure, core AWS services, and deployment concepts — including storage, networking, and virtualization fundamentals."
+    },
+    {
+      "date": "2023 — Present",
+      "title": "B.Tech, Artificial Intelligence & Data Science",
+      "desc": "St. Peter's College of Engineering and Technology, Chennai"
+    },
+    {
+      "date": "2021 — 2023",
+      "title": "Higher Secondary Education",
+      "desc": "Excel Matric Hr. Sec. School, Chennai"
+    }
+  ],
+  "certificates": [
+    "Python Programming — NPTEL",
+    "UI/UX Design Fundamentals",
+    "Cyber Security Basics"
+  ],
+  "courses": [
+    "Introduction to Python Programming",
+    "Introduction to Machine Learning",
+    "Introduction to IoT Embedded Systems"
+  ],
+  "interests": {
+    "text": "When I'm not training a model or restyling a Figma file, I'm usually learning a new AI tool for its own sake, or losing a slow game of chess. Cricket helps with the losing gracefully part.",
+    "languages": "EN · TA"
+  },
+  "contact": {
+    "email": "ravivishnu793@gmail.com",
+    "phone": "+91 63813 35230",
+    "location": "Chennai, India"
+  }
+}

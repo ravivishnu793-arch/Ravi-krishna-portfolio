@@ -8,7 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="editor.css">
 </head>
 <body>
 
@@ -36,11 +38,9 @@
     <canvas id="net" aria-hidden="true"></canvas>
     <div class="hero-inner">
       <p class="eyebrow mono">// student.profile — Chennai, India</p>
-      <h1 class="hero-title">
-        Ravi Krishna A R
-      </h1>
-      <p class="hero-role">B.Tech, Artificial Intelligence &amp; Data Science</p>
-      <p class="hero-desc">
+      <h1 class="hero-title" id="heroName">Ravi Krishna A R</h1>
+      <p class="hero-role" id="heroRole">B.Tech, Artificial Intelligence &amp; Data Science</p>
+      <p class="hero-desc" id="heroDesc">
         I build small, working models out of messy real-world data — forecasting demand,
         summarizing speech, teaching machines to notice patterns people miss.
       </p>
@@ -55,113 +55,50 @@
 
   <!-- SUMMARY -->
   <section class="section summary" id="about">
-    <p class="eyebrow mono">// summary</p>
-    <p class="summary-text">
-      Motivated, detail-oriented AI &amp; Data Science student with a strong interest in
-      machine learning, data analytics, and applied AI. Comfortable in Python end to end —
-      from cleaning a dataset to shipping a working prototype — and drawn to projects that
-      turn ambiguous problems into measurable ones.
-    </p>
+    <div class="section-head">
+      <p class="eyebrow mono">// summary</p>
+      <button class="edit-field-btn" data-edit="summary" hidden>Edit</button>
+    </div>
+    <p class="summary-text" id="summaryText"></p>
   </section>
 
   <!-- SKILLS -->
   <section class="section" id="skills">
-    <p class="eyebrow mono">$ skills --list</p>
-    <h2 class="section-title">What I work with</h2>
-
-    <div class="skill-groups">
-      <div class="skill-group">
-        <h3 class="skill-group-title">Core</h3>
-        <ul class="tag-list">
-          <li class="tag tag-signal">Python</li>
-          <li class="tag">Java</li>
-          <li class="tag">HTML / CSS</li>
-          <li class="tag">MS Excel</li>
-          <li class="tag">Figma</li>
-        </ul>
+    <div class="section-head">
+      <div>
+        <p class="eyebrow mono">$ skills --list</p>
+        <h2 class="section-title">What I work with</h2>
       </div>
-      <div class="skill-group">
-        <h3 class="skill-group-title">AI &amp; Data Science</h3>
-        <ul class="tag-list">
-          <li class="tag tag-teal">Machine Learning</li>
-          <li class="tag tag-teal">Data Analytics</li>
-          <li class="tag tag-teal">Data Visualization</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <h3 class="skill-group-title">Working with people</h3>
-        <ul class="tag-list">
-          <li class="tag">Communication</li>
-          <li class="tag">Teamwork</li>
-          <li class="tag">Problem Solving</li>
-        </ul>
-      </div>
+      <button class="edit-field-btn" data-edit="skills" hidden>+ Add skill</button>
     </div>
+
+    <div class="skill-groups" id="skillGroups"></div>
   </section>
 
   <!-- PROJECTS -->
   <section class="section" id="work">
-    <p class="eyebrow mono">SELECT * FROM projects</p>
-    <h2 class="section-title">Projects</h2>
-
-    <div class="cards" id="projectCards">
-      <article class="card tilt">
-        <div class="card-glow" aria-hidden="true"></div>
-        <p class="card-tag mono">forecasting</p>
-        <h3>Water Demand Forecasting</h3>
-        <p>
-          A machine learning model that predicts urban water demand from climate and
-          historical usage data — built to help utilities plan supply instead of react to it.
-        </p>
-        <ul class="card-stack mono">
-          <li>Python</li><li>Pandas</li><li>NumPy</li><li>Scikit-learn</li>
-        </ul>
-      </article>
-
-      <article class="card tilt">
-        <div class="card-glow" aria-hidden="true"></div>
-        <p class="card-tag mono">nlp</p>
-        <h3>AI Smart Note-Taking Assistant</h3>
-        <p>
-          An AI note-taking assistant with speech-to-text capture and automatic
-          summarization, designed to keep notes organized without extra manual effort.
-        </p>
-        <ul class="card-stack mono">
-          <li>Python</li><li>NLP</li><li>Speech-to-Text</li>
-        </ul>
-      </article>
+    <div class="section-head">
+      <div>
+        <p class="eyebrow mono">SELECT * FROM projects</p>
+        <h2 class="section-title">Projects</h2>
+      </div>
+      <button class="edit-field-btn" data-edit="project" hidden>+ Add project</button>
     </div>
+
+    <div class="cards" id="projectCards"></div>
   </section>
 
   <!-- PATH: experience + education as a real timeline -->
   <section class="section" id="path">
-    <p class="eyebrow mono">// path --chronological</p>
-    <h2 class="section-title">Path so far</h2>
+    <div class="section-head">
+      <div>
+        <p class="eyebrow mono">// path --chronological</p>
+        <h2 class="section-title">Path so far</h2>
+      </div>
+      <button class="edit-field-btn" data-edit="timeline" hidden>+ Add entry</button>
+    </div>
 
-    <ol class="timeline">
-      <li class="timeline-item">
-        <div class="timeline-marker" aria-hidden="true"></div>
-        <p class="timeline-date mono">2025 — Jun–Jul</p>
-        <h3>Cloud Computing &amp; AWS Internship</h3>
-        <p>
-          30-day internship covering cloud infrastructure, core AWS services, and
-          deployment concepts — including storage, networking, and virtualization
-          fundamentals.
-        </p>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-marker" aria-hidden="true"></div>
-        <p class="timeline-date mono">2023 — Present</p>
-        <h3>B.Tech, Artificial Intelligence &amp; Data Science</h3>
-        <p>St. Peter's College of Engineering and Technology, Chennai</p>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-marker" aria-hidden="true"></div>
-        <p class="timeline-date mono">2021 — 2023</p>
-        <h3>Higher Secondary Education</h3>
-        <p>Excel Matric Hr. Sec. School, Chennai</p>
-      </li>
-    </ol>
+    <ol class="timeline" id="timelineList"></ol>
   </section>
 
   <!-- CERTIFICATES + COURSES -->
@@ -169,56 +106,43 @@
     <p class="eyebrow mono">// certificates &amp; coursework</p>
     <div class="split">
       <div>
-        <h3 class="split-title">Certificates</h3>
-        <ul class="cert-list">
-          <li class="cert tilt"><span class="cert-dot"></span>Python Programming — NPTEL</li>
-          <li class="cert tilt"><span class="cert-dot"></span>UI/UX Design Fundamentals</li>
-          <li class="cert tilt"><span class="cert-dot"></span>Cyber Security Basics</li>
-        </ul>
+        <div class="section-head">
+          <h3 class="split-title">Certificates</h3>
+          <button class="edit-field-btn" data-edit="certificates" hidden>+ Add</button>
+        </div>
+        <ul class="cert-list" id="certList"></ul>
       </div>
       <div>
-        <h3 class="split-title">NPTEL Courses</h3>
-        <ul class="cert-list">
-          <li class="cert tilt"><span class="cert-dot"></span>Introduction to Python Programming</li>
-          <li class="cert tilt"><span class="cert-dot"></span>Introduction to Machine Learning</li>
-          <li class="cert tilt"><span class="cert-dot"></span>Introduction to IoT Embedded Systems</li>
-        </ul>
+        <div class="section-head">
+          <h3 class="split-title">NPTEL Courses</h3>
+          <button class="edit-field-btn" data-edit="courses" hidden>+ Add</button>
+        </div>
+        <ul class="cert-list" id="courseList"></ul>
       </div>
     </div>
   </section>
 
   <!-- INTERESTS -->
   <section class="section interests">
-    <p class="eyebrow mono">// outside the terminal</p>
-    <p class="interests-text">
-      When I'm not training a model or restyling a Figma file, I'm usually learning a new
-      AI tool for its own sake, or losing a slow game of chess. Cricket helps with the losing
-      gracefully part.
-    </p>
-    <p class="interests-lang mono">EN · TA</p>
+    <div class="section-head">
+      <p class="eyebrow mono">// outside the terminal</p>
+      <button class="edit-field-btn" data-edit="interests" hidden>Edit</button>
+    </div>
+    <p class="interests-text" id="interestsText"></p>
+    <p class="interests-lang mono" id="interestsLang"></p>
   </section>
 
   <!-- CONTACT -->
   <section class="section contact" id="contact">
-    <p class="eyebrow mono">// contact</p>
+    <div class="section-head">
+      <p class="eyebrow mono">// contact</p>
+      <button class="edit-field-btn edit-field-btn--light" data-edit="contact" hidden>Edit</button>
+    </div>
     <h2 class="section-title">Let's build something</h2>
     <p class="contact-lead">
       Open to internships and entry-level roles in ML, data analytics, or applied AI.
     </p>
-    <div class="contact-grid">
-      <a class="contact-item" href="mailto:ravivishnu793@gmail.com">
-        <span class="contact-label mono">email</span>
-        <span class="contact-value">ravivishnu793@gmail.com</span>
-      </a>
-      <a class="contact-item" href="tel:+916381335230">
-        <span class="contact-label mono">phone</span>
-        <span class="contact-value">+91 63813 35230</span>
-      </a>
-      <div class="contact-item">
-        <span class="contact-label mono">location</span>
-        <span class="contact-value">Chennai, India</span>
-      </div>
-    </div>
+    <div class="contact-grid" id="contactGrid"></div>
   </section>
 
 </main>
@@ -227,6 +151,41 @@
   <p class="mono">Ravi Krishna A R — built with real data, no filler.</p>
 </footer>
 
+<!-- EDIT MODE TOGGLE -->
+<button id="editToggle" class="edit-toggle" aria-pressed="false" title="Edit page content">
+  <span class="edit-toggle-dot" aria-hidden="true"></span>
+  <span id="editToggleLabel">Edit</span>
+</button>
+
+<!-- EDIT MODAL (used for add / edit forms) -->
+<div id="editModal" class="edit-modal" hidden>
+  <div class="edit-modal-card">
+    <div class="edit-modal-head">
+      <h3 id="editModalTitle">Edit</h3>
+      <button id="editModalClose" class="edit-modal-close" aria-label="Close">&times;</button>
+    </div>
+    <form id="editModalForm" class="edit-modal-form"></form>
+  </div>
+</div>
+
+<!-- DATA TOOLS PANEL -->
+<div id="dataPanel" class="data-panel" hidden>
+  <p class="data-panel-title mono">save your changes</p>
+  <p class="data-panel-copy">
+    Edits are stored in this browser only. Export the file and replace
+    <code>content.json</code> in your GitHub repo to make changes visible to everyone.
+  </p>
+  <div class="data-panel-actions">
+    <button id="exportBtn" class="btn btn-primary btn-small">Export content.json</button>
+    <label class="btn btn-ghost-light btn-small" for="importInput">Import file</label>
+    <input type="file" id="importInput" accept="application/json" hidden>
+    <button id="resetBtn" class="btn btn-text btn-small">Reset to original</button>
+  </div>
+</div>
+
+<script src="content-store.js"></script>
+<script src="render.js"></script>
 <script src="script.js"></script>
+<script src="editor.js"></script>
 </body>
 </html>

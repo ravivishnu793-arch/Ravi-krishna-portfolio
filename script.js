@@ -19,13 +19,15 @@
 
   /* ============================================
      3D TILT — project cards & cert rows
+     Re-attached every time content re-renders.
      ============================================ */
-  function attachTilt(el, strength = 8){
-    if (reduceMotion) return;
+  function attachTilt(el, strength){
+    if (reduceMotion || el.dataset.tiltBound) return;
+    el.dataset.tiltBound = '1';
     el.addEventListener('mousemove', (e) => {
       const r = el.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width;   // 0..1
-      const y = (e.clientY - r.top) / r.height;   // 0..1
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
       const rx = (0.5 - y) * strength;
       const ry = (x - 0.5) * strength;
       el.style.transform = `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg) translateZ(4px)`;
@@ -36,48 +38,48 @@
       el.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateZ(0)';
     });
   }
-  document.querySelectorAll('.tilt').forEach(el => attachTilt(el, el.classList.contains('cert') ? 4 : 8));
+
+  function initTilt(){
+    document.querySelectorAll('.card.tilt').forEach(el => attachTilt(el, 8));
+    document.querySelectorAll('.cert.tilt').forEach(el => attachTilt(el, 4));
+  }
 
   /* ============================================
      REVEAL ON SCROLL
      ============================================ */
-  const revealTargets = document.querySelectorAll('.section, .card, .timeline-item, .cert');
-  revealTargets.forEach(el => el.classList.add('reveal'));
-
-  if (!reduceMotion && 'IntersectionObserver' in window){
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting){
-          entry.target.classList.add('reveal-in');
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-    revealTargets.forEach(el => io.observe(el));
-  } else {
-    revealTargets.forEach(el => el.classList.add('reveal-in'));
+  function initReveal(){
+    const targets = document.querySelectorAll('.section:not(.reveal-bound), .card:not(.reveal-bound), .timeline-item:not(.reveal-bound), .cert:not(.reveal-bound)');
+    targets.forEach(elm => {
+      elm.classList.add('reveal', 'reveal-bound');
+      if (reduceMotion || !('IntersectionObserver' in window)){
+        elm.classList.add('reveal-in');
+      }
+    });
+    if (!reduceMotion && 'IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting){
+            entry.target.classList.add('reveal-in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      targets.forEach(elm => io.observe(elm));
+    }
   }
 
   /* ============================================
      HERO SIGNATURE — skill network canvas
-     Each node represents a real skill from the resume.
-     Nodes drift slowly; lines connect near neighbors;
-     proximity to the pointer brightens a node and
-     shows its label.
+     Nodes come from the current skill list (editable).
      ============================================ */
   const canvas = document.getElementById('net');
-  const ctx = canvas.getContext('2d');
-
-  const SKILLS = [
-    'Python', 'Machine Learning', 'Data Analytics', 'Data Visualization',
-    'Java', 'NLP', 'Scikit-learn', 'Pandas', 'HTML/CSS', 'Figma',
-    'Problem Solving', 'AWS / Cloud'
-  ];
+  const ctx = canvas ? canvas.getContext('2d') : null;
 
   let width, height, dpr;
   let nodes = [];
   let pointer = { x: -9999, y: -9999 };
   let hoveredNode = null;
+  let rafStarted = false;
 
   function resize(){
     const hero = document.querySelector('.hero');
@@ -91,8 +93,9 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  function initNodes(){
-    nodes = SKILLS.map((label, i) => ({
+  function initNodes(labels){
+    const source = (labels && labels.length) ? labels : ['Python', 'Machine Learning', 'Data Analytics'];
+    nodes = source.map((label, i) => ({
       label,
       x: Math.random() * width,
       y: Math.random() * height,
@@ -105,7 +108,6 @@
   function step(){
     ctx.clearRect(0, 0, width, height);
 
-    // update positions
     nodes.forEach(n => {
       n.x += n.vx;
       n.y += n.vy;
@@ -113,7 +115,6 @@
       if (n.y < 0 || n.y > height) n.vy *= -1;
     });
 
-    // connections
     const linkDist = Math.min(width, height) * 0.22;
     for (let i = 0; i < nodes.length; i++){
       for (let j = i + 1; j < nodes.length; j++){
@@ -132,7 +133,6 @@
       }
     }
 
-    // pointer proximity
     hoveredNode = null;
     let closestDist = 60;
     nodes.forEach(n => {
@@ -144,7 +144,6 @@
       }
     });
 
-    // draw nodes
     nodes.forEach(n => {
       const isNear = n === hoveredNode;
       ctx.beginPath();
@@ -159,7 +158,6 @@
       }
     });
 
-    // label for hovered node
     if (hoveredNode){
       ctx.font = '500 13px "IBM Plex Mono", monospace';
       ctx.fillStyle = '#EDEFF7';
@@ -184,20 +182,30 @@
     pointer.x = -9999; pointer.y = -9999;
   }
 
-  if (canvas){
+  function initCanvas(labels){
+    if (!canvas) return;
     resize();
-    initNodes();
-    canvas.addEventListener('mousemove', pointerMove);
-    canvas.addEventListener('mouseleave', pointerLeave);
-    canvas.addEventListener('touchmove', (e) => {
-      if (e.touches[0]) pointerMove(e.touches[0]);
-    }, { passive: true });
-    window.addEventListener('resize', () => { resize(); });
-
-    if (reduceMotion){
-      step(); // draw a single static frame
-    } else {
-      requestAnimationFrame(step);
+    initNodes(labels);
+    if (!rafStarted){
+      canvas.addEventListener('mousemove', pointerMove);
+      canvas.addEventListener('mouseleave', pointerLeave);
+      canvas.addEventListener('touchmove', (e) => {
+        if (e.touches[0]) pointerMove(e.touches[0]);
+      }, { passive: true });
+      window.addEventListener('resize', () => { resize(); });
+      rafStarted = true;
+      if (reduceMotion) step(); else requestAnimationFrame(step);
     }
   }
+
+  /* ============================================
+     Public hook — called after every render
+     ============================================ */
+  window.PortfolioInteractive = { initTilt, initReveal, initCanvas };
+
+  document.addEventListener('content:rendered', (e) => {
+    initTilt();
+    initReveal();
+    initCanvas(e.detail.skillLabels);
+  });
 })();
